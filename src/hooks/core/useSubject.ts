@@ -1,6 +1,7 @@
 import clone from "lodash/clone";
 import { useDebugValue, useEffect, useState } from "react";
-import { BehaviorSubject, Subscription } from "rxjs";
+import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
+import { Subscription } from "rxjs/internal/Subscription";
 
 type AcceptableTypes =
   | Array<unknown>

@@ -1,13 +1,17 @@
-import { useState } from "react";
 import { BehaviorSubject } from "rxjs";
-import { useSubject } from "./utils/useSubject";
-import { useValue } from "./utils/useValue";
+import { useSubject, useValue } from "./hooks/core";
 
 const todo$ = new BehaviorSubject<{ text: string; checked: boolean }[]>([]);
-todo$.subscribe((todo) => console.log(todo));
+const useTodo = () => useSubject(todo$, "Todo");
+
+todo$.subscribe({
+  next: (todo) => console.log(todo),
+  error: (error) => console.log("TODO ERROR", error),
+  complete: () => console.log("TODO COMPLETED"),
+});
 
 function TodoList() {
-  const [todo, setTodo] = useSubject(todo$, "Todo");
+  const [todo, setTodo] = useTodo();
 
   return (
     <ul style={{ listStyleType: "none" }}>
@@ -37,21 +41,21 @@ function TodoList() {
 }
 
 export default function App() {
-  const [todoText, setTodoText] = useState("");
-  const [, setTodo] = useSubject(todo$, "Todo");
+  const [todoData, setTodoData] = useValue({ text: "" }, "Data");
+  const [, setTodo] = useTodo();
 
   const createTodo = () => {
-    if (todoText.length == 0) return;
-    setTodo((_) => _.push({ text: todoText, checked: false }));
-    setTodoText("");
+    if (todoData.text.length == 0) return;
+    setTodo((_) => _.push({ text: todoData.text, checked: false }));
+    setTodoData((_) => (_.text = ""));
   };
 
   return (
     <div>
       <input
         placeholder="Your todo"
-        value={todoText}
-        onChange={(ev) => setTodoText(ev.target.value)}
+        value={todoData.text}
+        onChange={(ev) => setTodoData((_) => (_.text = ev.target.value))}
         onKeyUp={(ev) => (ev.key == "Enter" ? createTodo() : null)}
         style={{ marginInlineEnd: 8 }}
       />
