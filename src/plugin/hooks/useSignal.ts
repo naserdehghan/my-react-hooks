@@ -1,11 +1,8 @@
 import clone from "lodash/clone";
 import { useDebugValue, useState } from "react";
+import { AcceptableTypes } from "../types";
 
-type AcceptableTypes =
-  | Array<unknown>
-  | Record<string | number | symbol, unknown>;
-
-export function useValue<T extends AcceptableTypes>(
+export function useSignal<T extends AcceptableTypes>(
   initialValue: T,
   debugName?: string
 ): [T, (applier: (prev: T) => void) => void] {

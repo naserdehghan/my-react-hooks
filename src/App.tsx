@@ -1,14 +1,5 @@
-import { BehaviorSubject } from "rxjs";
-import { useSubject, useValue } from "./hooks/core";
-
-const todo$ = new BehaviorSubject<{ text: string; checked: boolean }[]>([]);
-const useTodo = () => useSubject(todo$, "Todo");
-
-todo$.subscribe({
-  next: (todo) => console.log(todo),
-  error: (error) => console.log("TODO ERROR", error),
-  complete: () => console.log("TODO COMPLETED"),
-});
+import { useTodo } from "./hooks/useTodo";
+import { useSignal } from "./plugin";
 
 function TodoList() {
   const [todo, setTodo] = useTodo();
@@ -41,7 +32,7 @@ function TodoList() {
 }
 
 export default function App() {
-  const [todoData, setTodoData] = useValue({ text: "" }, "Data");
+  const [todoData, setTodoData] = useSignal({ text: "" }, "Data");
   const [, setTodo] = useTodo();
 
   const createTodo = () => {
