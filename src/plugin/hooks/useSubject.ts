@@ -2,7 +2,6 @@ import clone from "lodash/clone";
 import { useDebugValue, useEffect, useState } from "react";
 import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
 import { Subscription } from "rxjs/internal/Subscription";
-import { distinctUntilChanged } from "rxjs/operators";
 import { AcceptableTypes } from "../types";
 
 export function useSubject<T extends AcceptableTypes>(
